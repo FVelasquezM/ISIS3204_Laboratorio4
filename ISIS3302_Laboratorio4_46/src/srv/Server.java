@@ -90,16 +90,6 @@ public class Server {
 		st.notify();
 	}
 
-	private void threadToWait(ServerThread st) {
-
-		try{
-			st.wait();
-			waitingThreads.add(st);
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Pre: waitingThreads != null
@@ -109,7 +99,7 @@ public class Server {
 		ServerThread st;
 		for(int i = 0; i<THREAD_COUNT; i++) {
 			st = new ServerThread(i);
-			threadToWait(st);
+			waitingThreads.add(st);
 		}
 
 	}
@@ -124,7 +114,7 @@ public class Server {
 		if(clientQueue.isEmpty()) {
 			//No hay clientes en espera, pasar thread a estado de espera.
 			//pasar thread a espera. 
-			threadToWait(st);
+			waitingThreads.add(st);
 		}
 		else {
 			//Hay clientes en espera, asignar inmediatamente.
