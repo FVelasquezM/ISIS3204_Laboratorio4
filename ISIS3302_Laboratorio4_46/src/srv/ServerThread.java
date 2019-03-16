@@ -1,56 +1,65 @@
 package srv;
 
+import java.io.PrintWriter;
+import java.net.Socket;
+
+import javax.net.ssl.SSLContext;
+
 public class ServerThread extends Thread{
 	
 	private static Server server;
 	
+	private final int threadNumber;
+	
 	private int activeNumber;
 	
+	private Socket s; 
 	
 	protected static void setServer(Server s) {
 		server = s;
 	}
 	
 	public ServerThread(int i) {
-		//TODO, depende de cada implementación
+		this.threadNumber = i;
+		this.activeNumber = -1;
 		System.out.println("Created Thread " + i);
-		
-		try {
-			this.wait();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
 	}
-
+	
+	protected void setSocket(Socket s) {
+		this.s = s;
+	}
+	
 	protected void setActiveNumber(int activeNumber) {
 		this.activeNumber = activeNumber;
 	}
 	
-	
 	protected void attend() {
 		
 		//Hacer cosas, según implementación.
-		
-	}
-	
-	
-	public void run() {
-		//OJO, esto debe estar dentro de un while true, pues no es legal que
-		//sobre el mismo thread se llame run varias veces.
-		//TODO, cómo se maneja que se encuentre dormido????
-		//idea: notify y wait.
-		
-		//Thread inicia dormido. Cuando es notificado del éxito de
-		//
 		try {
-			this.wait();
+			PrintWriter out = new PrintWriter(s.getOutputStream());
+			out.print("Thread " + threadNumber + " active");
+			out.close();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	public void run() {
 		
 		while(true) {
+			
+			//Thread inicia dormido.
+			//
+			synchronized(this) {
+				try {
+					this.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 			
 			attend();
 			
@@ -58,15 +67,9 @@ public class ServerThread extends Thread{
 			//Notificar al servidor que ha acabado, 
 			//para así ser puesto en la fila de espera.
 			server.threadDone(activeNumber);
-			this.activeNumber = -1;
-			
-			//Dormirse, se debe ahora esperar a que el servidor
-			//reinicie la ejecución.
-			try {
-				this.wait();
-			}
-			catch(Exception e) {
-				e.printStackTrace();
+			synchronized(this) {
+				this.activeNumber = -1;
+				this.s = null;
 			}
 		}
 	}
