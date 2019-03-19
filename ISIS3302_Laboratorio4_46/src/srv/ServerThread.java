@@ -3,6 +3,7 @@ package srv;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import javax.imageio.ImageIO;
 import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
 
-import logic.VideoLoader;
+import logic.VideoUtility;
 
 public class ServerThread extends Thread{
 
@@ -45,43 +46,22 @@ public class ServerThread extends Thread{
 	protected void attend() {
 
 		try {
-			PrintWriter out = new PrintWriter(s.getOutputStream());
-			out.println("Thread " + threadNumber + " active");
+			//PrintWriter out = new PrintWriter(s.getOutputStream());
+			System.out.println("Thread " + threadNumber + " active");
 
-			ArrayList<Picture> frames = VideoLoader.LoadVideo();
 			System.out.println("Video LOADED");
 			
 			//Enviar STR indicando que se iniciará el envío del video.
-			out.println("STR");
+			//out.println("STR");
 			
-			BufferedImage bf;
-			ByteArrayOutputStream ba;
-			int i = 0;
-			System.out.println("FRAMES TO SEND: " + frames.size());
-			for(Picture p : frames) {
-				//Enviar FRM indicando el inicio de un frame
-				out.println("FRM");
-				
-				//Preparar frame para envío
-				bf = AWTUtil.toBufferedImage(p);
-				ba = new ByteArrayOutputStream();
-				ImageIO.write(bf, "png", ba);
-				
-				//Enviar tamaño de la información para preparar al receptor
-				out.println("SIZ " + ba.size());
-				
-				//Envíar imagen
-				ba.writeTo(s.getOutputStream());
-				System.out.println("Frame " + i++ + " sent | size: " + ba.size());
-				
-				//FRAME END (sirve de buffer entre frames, ninguna otra función)
-				out.println("FRE");
-			}
+			//Enviar video
+			VideoUtility.SendVideo(VideoUtility.LoadVideo(), s.getOutputStream());
+			
 			//Indica al cliente que se ha acabado la transmisión de frames.
-			out.println("STP");
+			//out.println("STP");
 			System.out.println("MOVIE SENT");
 			
-			out.close();
+			//out.close();
 			s.close();
 
 		}
