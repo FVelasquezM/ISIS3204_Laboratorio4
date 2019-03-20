@@ -1,0 +1,3 @@
+VID:Wild Life Sample:localhost:2222
+VID:SAMPLE1:localhost:2223
+VID:SAMPLE2:localhost:2224
