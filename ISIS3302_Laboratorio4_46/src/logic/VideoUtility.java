@@ -18,7 +18,7 @@ public class VideoUtility {
 	public static FileInputStream LoadVideo() {
 
 		try {
-			File file = new File("samplewmv.wmv");
+			File file = new File(Config.videoFile);
 
 			return new FileInputStream(file);	
 		}

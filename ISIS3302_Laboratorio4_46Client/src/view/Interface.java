@@ -23,7 +23,7 @@ public class Interface {
 	
 	private void GenerateInterface(ArrayList<Video> videos, ActionListener ac) {
 		
-		JFrame f=new JFrame("Simple Streaming Client");  
+		JFrame f=new JFrame("TCP Streaming Client Marroquín-Silva-Velásquez");  
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		int y = 20;

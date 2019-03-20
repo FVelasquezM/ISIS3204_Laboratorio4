@@ -1,8 +1,11 @@
 package srv;
 
+import java.io.File;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+
+import logic.Config;
 
 //Clase singleton.
 public class StreamServer {
@@ -28,10 +31,12 @@ public class StreamServer {
 
 		initializeThreads();
 		
+		new Config();
+		
 		ServerThread.setServer(this);
 		
 		try {
-			ServerSocket ss = new ServerSocket(2222);
+			ServerSocket ss = new ServerSocket(Config.port);
 			acceptConns(ss);
 		}
 		catch(Exception e) {
