@@ -1,23 +1,13 @@
 package srv;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-
-import org.jcodec.common.model.Picture;
-import org.jcodec.scale.AWTUtil;
 
 import logic.VideoUtility;
 
 public class ServerThread extends Thread{
 
-	private static Server server;
+	private static StreamServer server;
 
 	private final int threadNumber;
 
@@ -25,7 +15,7 @@ public class ServerThread extends Thread{
 
 	private Socket s; 
 
-	protected static void setServer(Server s) {
+	protected static void setServer(StreamServer s) {
 		server = s;
 	}
 
