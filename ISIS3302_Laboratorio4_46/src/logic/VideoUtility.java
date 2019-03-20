@@ -23,7 +23,7 @@ public class VideoUtility {
 	public static FileInputStream LoadVideo() {
 
 		try {
-			File file = new File("video.mp4");
+			File file = new File("samplewmv.wmv");
 
 			return new FileInputStream(file);	
 		}
@@ -44,24 +44,16 @@ public class VideoUtility {
 		
 		try {
 			
-			File f = new File("sirve.mp4");
-			FileOutputStream fo = new FileOutputStream(f);
-			
-			int chunckSize = 256;
+			int chunckSize = 2048;
 			
 			byte[] vBytes = new byte[chunckSize];
 			
 			int readBytes = -1;
 			
-			do {
-				readBytes = video.read(vBytes, 0, chunckSize);
-				if(readBytes != -1)
-					fo.write(vBytes, 0, readBytes);
-					out.write(vBytes, 0, readBytes);
+			while((readBytes = video.read(vBytes, 0, chunckSize)) != -1){
+				out.write(vBytes, 0, readBytes);
 			}
-			while(readBytes != -1);
 			
-			fo.close();
 			out.close();
 		}
 		catch(Exception e) {

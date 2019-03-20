@@ -75,7 +75,6 @@ public class ServerThread extends Thread{
 		while(true) {
 
 			//Thread inicia dormido.
-			//
 			synchronized(this) {
 				try {
 					this.wait();
