@@ -1,12 +1,8 @@
 package logic;
 
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 
 /**
  * Carga un archivo de video a memoria principal
@@ -39,7 +35,7 @@ public class VideoUtility {
 		
 		try {
 			
-			int chunckSize = 64;
+			int chunckSize = 1024;
 			
 			byte[] vBytes = new byte[chunckSize];
 			
@@ -55,8 +51,6 @@ public class VideoUtility {
 			e.printStackTrace();
 		}
 		
-		System.out.println("Video Sent!");
-
 	}
 
 }

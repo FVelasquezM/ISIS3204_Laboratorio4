@@ -11,16 +11,17 @@ public class VideoPlayer {
 
 
 		try {
+			System.out.println("creating sock");
 			Socket s = new Socket(host, port);
-
+			System.out.println("Socket done");
 			while(true) {
 				InputStream di =  s.getInputStream();
-
+				System.out.println("Connecting to: " + host);
 				String filename = "stream-"+host+":"+port+".wmv";
 				File f = new File(filename);
 				FileOutputStream fo = new FileOutputStream(f);
 
-				int chunckSize = 64;
+				int chunckSize = 1024;
 
 				int inByte = -1;
 				byte[] inBytes = new byte[chunckSize];
@@ -32,8 +33,9 @@ public class VideoPlayer {
 				while((inByte = di.read(inBytes, 0, chunckSize)) != -1) {
 					fo.write(inBytes, 0, inByte);
 
-					if(i++ == 0) {
-						ProcessBuilder pb = new ProcessBuilder("/usr/bin/vlc", filename);
+					if(++i == 1) {
+						System.out.println("Opening VLC");
+						ProcessBuilder pb = new ProcessBuilder("/usr/bin/vlc", filename, "-L");
 						p = pb.start();
 					}
 
