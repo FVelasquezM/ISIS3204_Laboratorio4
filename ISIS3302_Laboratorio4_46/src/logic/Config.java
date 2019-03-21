@@ -24,6 +24,7 @@ public class Config {
 			//Segunda linea corresponde a ruta del archivo
 			inLine = bf.readLine();
 			videoFile = inLine.split(":")[1];
+			bf.close();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
